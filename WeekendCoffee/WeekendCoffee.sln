@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Mobile", "WeekendCoffee.Mobile\WeekendCoffee.Mobile.csproj", "{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Api", "WeekendCoffee.Api\WeekendCoffee.Api.csproj", "{D8E72316-3E04-47E6-910E-C20D93F9B085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekendCoffee.Api", "WeekendCoffee.Api\WeekendCoffee.Api.csproj", "{D8E72316-3E04-47E6-910E-C20D93F9B085}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Data", "WeekendCoffee.Data\WeekendCoffee.Data.csproj", "{C420406B-FACE-41B2-95CB-8A150D711125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekendCoffee.Data", "WeekendCoffee.Data\WeekendCoffee.Data.csproj", "{C420406B-FACE-41B2-95CB-8A150D711125}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekendCoffee.Services", "WeekendCoffee.Services\WeekendCoffee.Services.csproj", "{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Services", "WeekendCoffee.Services\WeekendCoffee.Services.csproj", "{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E7F5D4E-DB45-45A7-9B81-2BA5AF097C24}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D8E72316-3E04-47E6-910E-C20D93F9B085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8E72316-3E04-47E6-910E-C20D93F9B085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8E72316-3E04-47E6-910E-C20D93F9B085}.Release|Any CPU.ActiveCfg = Release|Any CPU
