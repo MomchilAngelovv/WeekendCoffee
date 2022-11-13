@@ -3,7 +3,7 @@
 	using Microsoft.AspNetCore.Mvc;
 
 	using WeekendCoffee.Services;
-	using WeekendCoffee.Api.Models;
+	using WeekendCoffee.Api.Models.Requests;
 
 	[ApiController]
 	[Route("[controller]")]

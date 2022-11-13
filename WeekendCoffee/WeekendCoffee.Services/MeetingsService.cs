@@ -50,7 +50,10 @@
 
 		public async Task<Meeting> GetByLabelAsync(string label)
 		{
-			return await this.db.Meetings.SingleOrDefaultAsync(l => l.Label == label);
+			return await this.db.Meetings
+				.Include(m => m.Attendances)
+					.ThenInclude(a => a.Member)
+				.SingleOrDefaultAsync(m => m.Label == label);
 		}
 
 		public async Task<Meeting> GetUpcomingAsync()

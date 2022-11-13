@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WeekendCoffee.Api.Models;
-using WeekendCoffee.Services;
-
-namespace WeekendCoffee.Api.Controllers
+﻿namespace WeekendCoffee.Api.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+
+	using WeekendCoffee.Services;
+	using WeekendCoffee.Api.Models.Requests;
+	using WeekendCoffee.Api.Models.Responses;
+
 	[ApiController]
 	[Route("[controller]")]
 	public class AttendancesController : ControllerBase
@@ -22,9 +24,10 @@ namespace WeekendCoffee.Api.Controllers
 			this.membersService = membersService;
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> SignUpForMeeting(SignUpForMeetingRequestModel requestModel)
+		[HttpGet]
+		public async Task<IActionResult> GetCurrentMeetingInformation()
 		{
+			var response = new GetCurrentMeetingInformationResponse();
 			var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
 			var currentMeeting = await meetingsService.GetByLabelAsync(currentMeetingLabel);
 			if (currentMeeting is null)
@@ -51,20 +54,54 @@ namespace WeekendCoffee.Api.Controllers
 				await this.meetingsService.CreateAsync(upcomingMeetingDate);
 			}
 
+			response.Label = currentMeeting.Label;
+
+			if (currentMeeting.Attendances is not null)
+			{
+				response.Members = currentMeeting.Attendances.Select(a => a.Member.NickName).ToList();
+			}
+
+			return this.Ok(response);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> SignUpForMeeting(SignUpForMeetingRequestModel requestModel)
+		{
+			var response = new SignUpForMeetingResponse();
+
+			var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
+			var currentMeeting = await meetingsService.GetByLabelAsync(currentMeetingLabel);
+			if (currentMeeting is null)
+			{
+				response.Status = "Failed";
+				response.Message = $"Cannot find meeting with label: {currentMeetingLabel}";
+				return this.Ok(response);
+			}
+
 			var member = await this.membersService.GetOneAsync(requestModel.MemberId);
 			if (member is null)
 			{
-
+				response.Status = "Failed";
+				response.Message = $"Cannot find member with Id: {requestModel.MemberId}";
+				return this.Ok(response);
 			}
 
-			var attendanceInfo = this.attendancesService.GetAttendanceInfoAsync(currentMeeting, member);
+			var attendanceInfo = await this.attendancesService.GetAttendanceInfoAsync(currentMeeting, member);
 			if (attendanceInfo is not null)
 			{
-
+				response.Status = "Failed";
+				response.Message = $"Member with Id: {requestModel.MemberId} has already signed for meeting: {currentMeeting.Label}";
+				return this.Ok(response);
 			}
 
 			var attendance = await this.attendancesService.SignUpForMeetingAsync("Coming", "", currentMeeting, member);
-			return this.Ok(attendance);
+
+			response.Status = "Succeed";
+			response.Message = $"Member with Id: {attendance.MemberId} successfully signed for meeting: {currentMeeting.Label}";
+			response.MemberId = member.Id;
+			response.MeetingLabel = currentMeeting.Label;
+
+			return this.Ok(response);
 		}
 	}
 }
