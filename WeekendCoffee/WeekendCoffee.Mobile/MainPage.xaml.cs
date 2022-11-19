@@ -29,7 +29,7 @@ namespace WeekendCoffee.Mobile
 		{
 			try
 			{
-
+				//TODO Fix url and permision stuff
 				var response = await _httpClient.GetAsync($"http://10.0.2.2:5281/meetings/current");
 				if (!response.IsSuccessStatusCode)
 				{
