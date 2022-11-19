@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Data", "Weeke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeekendCoffee.Services", "WeekendCoffee.Services\WeekendCoffee.Services.csproj", "{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekendCoffee.Mobile", "WeekendCoffee.Mobile\WeekendCoffee.Mobile.csproj", "{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D260B7C-7A1B-4098-B68E-EAEFE857DD80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E20A4FA-6C5A-4A64-B6CC-ED88049A4456}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

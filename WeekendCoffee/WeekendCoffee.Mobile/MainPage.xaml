@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeekendCoffee.Mobile.MainPage">
+
+	<Grid RowDefinitions="100, Auto, Auto, *" ColumnDefinitions=".70*, .30*" Padding="10" RowSpacing="10" ColumnSpacing="10">
+
+		<Border Grid.Row="0" Grid.ColumnSpan="2" >
+			<Image Source="dotnet_bot.svg" BackgroundColor="Grey"/>
+		</Border>
+
+		<Border Grid.Row="1" Grid.Column="0" Padding="5">
+			<Entry Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
+		</Border>
+		
+		<Button x:Name="AddButton" Text="Add" Grid.Row="1" Grid.Column="1" Clicked="OnAddButtonClicked"/>
+
+		<Border Grid.Row="2" Grid.ColumnSpan="2" Padding="5">
+			<Label Grid.Row="2" Grid.ColumnSpan="2" Text="19_November_2002 - Weekend coffee with Misty" />
+		</Border>
+		
+		<Border Grid.Row="3" Grid.ColumnSpan="2" Padding="5">
+			<CollectionView Grid.Row="3" Grid.ColumnSpan="2">
+				<CollectionView.ItemsSource>
+					<x:Array Type="{x:Type x:String}">
+						<x:String>Misty</x:String>
+						<x:String>Cherkata</x:String>
+						<x:String>Mafiata1</x:String>
+					</x:Array>
+				</CollectionView.ItemsSource>
+			</CollectionView>
+		</Border>
+
+		
+	</Grid>
+	
+	<!--<ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Hello, World!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Welcome to .NET Multi-platform App UI"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>-->
+
+</ContentPage>

@@ -17,7 +17,7 @@
 			this.meetingsService = meetingsService;
 		}
 
-		[HttpGet]
+		[HttpGet("current")]
 		public async Task<IActionResult> GetCurrentMeetingInformation()
 		{
 			var response = new GetCurrentMeetingInformationResponse();
