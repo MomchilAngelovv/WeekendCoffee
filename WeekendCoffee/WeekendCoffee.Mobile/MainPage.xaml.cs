@@ -11,15 +11,15 @@ namespace WeekendCoffee.Mobile
 		public MainPage()
 		{
 
-			var handler = new Xamarin.Android.Net.AndroidMessageHandler();
-			handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
-			{
-				if (cert != null && cert.Issuer.Equals("CN=localhost"))
-					return true;
-				return errors == System.Net.Security.SslPolicyErrors.None;
-			};
+			//var handler = new Анд();
+			//handler.servercertificatecustomvalidationcallback = (message, cert, chain, errors) =>
+			//{
+			//	if (cert != null && cert.issuer.equals("cn=localhost"))
+			//		return true;
+			//	return errors == system.net.security.sslpolicyerrors.none;
+			//};
 
-			_httpClient = new HttpClient(handler);
+			_httpClient = new HttpClient();
 
 			InitializeComponent();
 
@@ -30,7 +30,7 @@ namespace WeekendCoffee.Mobile
 			try
 			{
 
-				var response = await _httpClient.GetAsync($"https://10.0.2.2:7281/meetings/current");
+				var response = await _httpClient.GetAsync($"http://10.0.2.2:5281/meetings/current");
 				if (!response.IsSuccessStatusCode)
 				{
 					//SOMETHING
