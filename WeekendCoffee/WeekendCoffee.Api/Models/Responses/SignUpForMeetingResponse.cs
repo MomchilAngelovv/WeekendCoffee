@@ -2,6 +2,6 @@
 {
 	public class SignUpForMeetingResponse
 	{
-		public string AttendanceId { get; set; }
+		public string Id { get; set; }
 	}
 }

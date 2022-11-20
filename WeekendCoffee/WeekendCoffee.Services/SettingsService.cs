@@ -8,6 +8,7 @@
 	public interface ISettingsService
 	{
 		Task<List<Setting>> GetMeetingTimeAsync();
+		Task<Setting> GetOneAsync(string key);
 		Task<Setting> InsertOneAsync(string key, string value);
 	}
 
@@ -26,6 +27,12 @@
 			return await this.db.Settings
 				.Where(s => s.Key == GlobalConstants.HoursSettingKey || s.Key == GlobalConstants.MinutesSettingKey)
 				.ToListAsync();
+		}
+
+		public async Task<Setting> GetOneAsync(string key)
+		{
+			return await this.db.Settings
+				.SingleOrDefaultAsync(s => s.Key == key);
 		}
 
 		public async Task<Setting> InsertOneAsync(string key, string value)

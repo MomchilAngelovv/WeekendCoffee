@@ -2,7 +2,7 @@
 {
 	using System.ComponentModel.DataAnnotations;
 
-	public class InsertSettingRequestModel
+	public class InsertSettingRequest
 	{
 		[Required]
 		public string Key { get; set; }
