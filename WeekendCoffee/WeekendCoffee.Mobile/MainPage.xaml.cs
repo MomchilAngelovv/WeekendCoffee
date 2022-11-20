@@ -43,8 +43,6 @@ namespace WeekendCoffee.Mobile
 					MemberId = Number.Text,	
 				};
 
-				//var content = new StringContent(contentObject.ToString(), Encoding.UTF8, "application/json");
-				//content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 				var addPlayerResponse = await _httpClient.PostAsJsonAsync($"http://10.0.2.2:5281/Attendances", contentObject);
 				if (!addPlayerResponse.IsSuccessStatusCode)
 				{
