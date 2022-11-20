@@ -24,8 +24,8 @@
 		{
 			var response = new ControllerResponse<MeetingInformationResponse>();
 
-			var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
-			var currentMeeting = await meetingsService.GetByLabelAsync(currentMeetingLabel);
+			//var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
+			var currentMeeting = await meetingsService.GetCurrentAsync();
 			if (currentMeeting is null)
 			{
 				var currentSaturdayDate = DateTime.UtcNow;
@@ -34,7 +34,7 @@
 					currentSaturdayDate = currentSaturdayDate.AddDays(1);
 				}
 
-				currentMeeting = await this.meetingsService.CreateAsync(currentSaturdayDate);
+				currentMeeting = await this.meetingsService.InsertOneAsync(currentSaturdayDate);
 
 				if (currentMeeting is null)
 				{
@@ -44,8 +44,8 @@
 				}
 			}
 
-			var upcomingMeetingLabel = this.meetingsService.GenerateLabelAsync(true);
-			var upcomingMeeting = await meetingsService.GetByLabelAsync(upcomingMeetingLabel);
+			//var upcomingMeetingLabel = this.meetingsService.GenerateLabelAsync(true);
+			var upcomingMeeting = await meetingsService.GetUpcomingAsync();
 			if (upcomingMeeting is null)
 			{
 				var upcomingMeetingDate = DateTime.UtcNow.AddDays(7);
@@ -54,7 +54,7 @@
 					upcomingMeetingDate = upcomingMeetingDate.AddDays(1);
 				}
 
-				upcomingMeeting = await this.meetingsService.CreateAsync(upcomingMeetingDate);
+				upcomingMeeting = await this.meetingsService.InsertOneAsync(upcomingMeetingDate);
 
 				if (upcomingMeeting is null)
 				{
@@ -64,11 +64,19 @@
 				}
 			}
 
-			response.Data.Label = currentMeeting.Label;
+			//TODO Fix warnings
+			response.Status = GlobalConstants.Success;
+			response.ErrorMessage = GlobalConstants.NotAvailable;
+			response.Data = new MeetingInformationResponse
+			{
+				Label = upcomingMeeting.Label,
+			};
 
 			if (currentMeeting.Attendances is not null)
 			{
-				response.Data.Members = currentMeeting.Attendances.Select(a => a.Member.NickName).ToList();
+				response.Data.Members = currentMeeting.Attendances
+					.Select(a => a.Member.NickName)
+					.ToList();
 			}
 
 			return this.Ok(response);

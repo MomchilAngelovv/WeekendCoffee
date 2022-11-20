@@ -7,5 +7,7 @@
 
 		public const string Error = "Error";
 		public const string Success = "Success";
+
+		public const string NotAvailable = "N/A";
 	}
 }

@@ -1,8 +1,12 @@
 ﻿namespace WeekendCoffee.Api.Controllers
 {
+	using System.Threading.Tasks;
+
 	using Microsoft.AspNetCore.Mvc;
 
+	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
+	using WeekendCoffee.Api.Models;
 	using WeekendCoffee.Api.Models.Requests;
 	using WeekendCoffee.Api.Models.Responses;
 
@@ -24,44 +28,43 @@
 			this.membersService = membersService;
 		}
 
-		
-
 		[HttpPost]
-		public async Task<IActionResult> SignUpForMeeting(SignUpForMeetingRequestModel requestModel)
+		public async Task<IActionResult> SignMemberForMeeting(SignMemberForMeetingRequest request)
 		{
-			var response = new SignUpForMeetingResponse();
+			var response = new ControllerResponse<SignUpForMeetingResponse>();
 
-			var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
-			var currentMeeting = await meetingsService.GetByLabelAsync(currentMeetingLabel);
+			var currentMeeting = await meetingsService.GetCurrentAsync();
 			if (currentMeeting is null)
 			{
-				response.Status = "Failed";
-				response.Message = $"Cannot find meeting with label: {currentMeetingLabel}";
+				response.Status = GlobalConstants.Error;
+				response.ErrorMessage = GlobalErrorMessages.CannotFindMeeting;
 				return this.Ok(response);
 			}
 
-			var member = await this.membersService.GetOneAsync(requestModel.MemberId);
+			var member = await this.membersService.GetOneAsync(request.MemberId);
 			if (member is null)
 			{
-				response.Status = "Failed";
-				response.Message = $"Cannot find member with Id: {requestModel.MemberId}";
+				response.Status = GlobalConstants.Error;
+				response.ErrorMessage = GlobalErrorMessages.CannotFindMember;
 				return this.Ok(response);
 			}
 
-			var attendanceInfo = await this.attendancesService.GetAttendanceInfoAsync(currentMeeting, member);
+			var attendanceInfo = await this.attendancesService.GetOneAsync(currentMeeting.Id, member.Id);
 			if (attendanceInfo is not null)
 			{
-				response.Status = "Failed";
-				response.Message = $"Member with Id: {requestModel.MemberId} has already signed for meeting: {currentMeeting.Label}";
+				response.Status = GlobalConstants.Error;
+				response.ErrorMessage = GlobalErrorMessages.MemberAlreadySignedForMeeting;
 				return this.Ok(response);
 			}
 
-			var attendance = await this.attendancesService.SignUpForMeetingAsync("Coming", "", currentMeeting, member);
+			var attendance = await this.attendancesService.SignMemberForMeetingAsync(currentMeeting.Id, member.Id, request.Comment);
 
-			response.Status = "Succeed";
-			response.Message = $"Member with Id: {attendance.MemberId} successfully signed for meeting: {currentMeeting.Label}";
-			response.MemberId = member.Id;
-			response.MeetingLabel = currentMeeting.Label;
+			response.Status = GlobalConstants.Success;
+			response.ErrorMessage = GlobalConstants.NotAvailable;
+			response.Data = new SignUpForMeetingResponse
+			{
+				AttendanceId = attendance.Id,
+			};
 
 			return this.Ok(response);
 		}

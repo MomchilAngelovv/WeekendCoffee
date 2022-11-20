@@ -3,14 +3,16 @@
 	using System.Globalization;
 
 	using Microsoft.EntityFrameworkCore;
-
+	using WeekendCoffee.Common;
 	using WeekendCoffee.Data;
 
 	public interface IMeetingsService
 	{
 		string GenerateLabelAsync(bool upcoming);
-		Task<Meeting> GetByLabelAsync(string label);
-		Task<Meeting> CreateAsync(DateTime occursOnDate);
+		Task<Meeting> GetCurrentAsync();
+		Task<Meeting> GetUpcomingAsync();
+		//Task<Meeting> GetByLabelAsync(string label);
+		Task<Meeting> InsertOneAsync(DateTime occursOnDate);
 	}
 
 	public class MeetingsService : IMeetingsService
@@ -26,7 +28,7 @@
 			this.settingsService = settingsService;
 		}
 
-		public async Task<Meeting> CreateAsync(DateTime occursOnDate)
+		public async Task<Meeting> InsertOneAsync(DateTime occursOnDate)
 		{
 			var meetingSettings = await settingsService.GetMeetingTimeAsync();
 
@@ -35,8 +37,8 @@
 				return null;
 			}
 
-			var hoursValue = int.Parse(meetingSettings.First(m => m.Key == "Hours").Value);
-			var minutesValue = int.Parse(meetingSettings.First(m => m.Key == "Minutes").Value);
+			var hoursValue = int.Parse(meetingSettings.First(m => m.Key == GlobalConstants.HoursSettingKey).Value);
+			var minutesValue = int.Parse(meetingSettings.First(m => m.Key == GlobalConstants.MinutesSettingKey).Value);
 
 			var occursOn = new DateTime(occursOnDate.Year, occursOnDate.Month, occursOnDate.Day, hoursValue, minutesValue, 0);
 			var label = $"{occursOn.Hour}:{occursOn.Minute}_{occursOn.DayOfWeek}_{occursOn.Day}_{occursOn.ToString("MMMM", CultureInfo.InvariantCulture)}_{occursOn.Year}";
@@ -98,4 +100,4 @@
 			return label;
 		}
 	}
-}
+}	

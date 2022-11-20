@@ -6,8 +6,8 @@
 
 	public interface IAttendancesService
 	{
-		Task<Attendance> SignUpForMeetingAsync(string state, string reason, Meeting meeting, Member member);
-		Task<Attendance> GetAttendanceInfoAsync(Meeting meeting, Member member);
+		Task<Attendance> SignMemberForMeetingAsync(string meetingId, int memberId, string comment);
+		Task<Attendance> GetOneAsync(string meetingId, int memberId);
 	}
 
 	public class AttendancesService : IAttendancesService
@@ -20,20 +20,19 @@
 			this.db = db;
 		}
 
-		public async Task<Attendance> GetAttendanceInfoAsync(Meeting meeting, Member member)
+		public async Task<Attendance> GetOneAsync(string meetingId, int memberId)
 		{
-			return await this.db.Attendances.SingleOrDefaultAsync(a => a.MeetingId == meeting.Id && a.MemberId == member.Id);
+			return await this.db.Attendances
+				.SingleOrDefaultAsync(a => a.MeetingId == meetingId && a.MemberId == memberId);
 		}
 
-		public async Task<Attendance> SignUpForMeetingAsync(string state, string reason, Meeting meeting, Member member)
+		public async Task<Attendance> SignMemberForMeetingAsync(string meetingId, int memberId, string comment)
 		{
 			var newAttendance = new Attendance
 			{
-				State = state,
-				Reason = reason,
-				SignedOn = DateTime.UtcNow,
-				Meeting = meeting,
-				Member = member
+				Comment = comment,
+				MeetingId = meetingId,
+				MemberId = memberId
 			};
 
 			await this.db.Attendances.AddAsync(newAttendance);

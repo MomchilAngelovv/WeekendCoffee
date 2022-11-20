@@ -9,9 +9,7 @@
 		}
 
 		public string Id { get; set; }
-		public string State { get; set; }
-		public string Reason { get; set; }
-		public DateTime SignedOn { get; set; }
+		public string Comment { get; set; }
 
 		public string MeetingId { get; set; }
 		public int MemberId { get; set; }
