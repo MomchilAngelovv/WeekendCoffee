@@ -4,6 +4,8 @@
 
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Responses;
+	using WeekendCoffee.Api.Models;
+	using WeekendCoffee.Common;
 
 	[ApiController]
 	[Route("[controller]")]
@@ -20,7 +22,8 @@
 		[HttpGet("current")]
 		public async Task<IActionResult> GetCurrentMeetingInformation()
 		{
-			var response = new GetCurrentMeetingInformationResponse();
+			var response = new ControllerResponse<MeetingInformationResponse>();
+
 			var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
 			var currentMeeting = await meetingsService.GetByLabelAsync(currentMeetingLabel);
 			if (currentMeeting is null)
@@ -32,6 +35,13 @@
 				}
 
 				currentMeeting = await this.meetingsService.CreateAsync(currentSaturdayDate);
+
+				if (currentMeeting is null)
+				{
+					response.Status = GlobalConstants.Error;
+					response.ErrorMessage = GlobalErrorMessages.CannotCreateMeeting;
+					return this.Ok(response);
+				}
 			}
 
 			var upcomingMeetingLabel = this.meetingsService.GenerateLabelAsync(true);
@@ -44,14 +54,21 @@
 					upcomingMeetingDate = upcomingMeetingDate.AddDays(1);
 				}
 
-				await this.meetingsService.CreateAsync(upcomingMeetingDate);
+				upcomingMeeting = await this.meetingsService.CreateAsync(upcomingMeetingDate);
+
+				if (upcomingMeeting is null)
+				{
+					response.Status = GlobalConstants.Error;
+					response.ErrorMessage = GlobalErrorMessages.CannotCreateMeeting;
+					return this.Ok(response);
+				}
 			}
 
-			response.Label = currentMeeting.Label;
+			response.Data.Label = currentMeeting.Label;
 
 			if (currentMeeting.Attendances is not null)
 			{
-				response.Members = currentMeeting.Attendances.Select(a => a.Member.NickName).ToList();
+				response.Data.Members = currentMeeting.Attendances.Select(a => a.Member.NickName).ToList();
 			}
 
 			return this.Ok(response);

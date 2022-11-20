@@ -11,5 +11,6 @@
 		public DbSet<Meeting> Meetings { get; set; }
 		public DbSet<Member> Members { get; set; }
 		public DbSet<Attendance> Attendances { get; set; }
+		public DbSet<Setting> Settings { get; set; }
 	}
 }

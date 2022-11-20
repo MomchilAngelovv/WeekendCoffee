@@ -22,6 +22,7 @@ builder.Services.AddCors();
 builder.Services.AddTransient<IAttendancesService, AttendancesService>();
 builder.Services.AddTransient<IMeetingsService, MeetingsService>();
 builder.Services.AddTransient<IMembersService, MembersService>();
+builder.Services.AddTransient<ISettingsService, SettingsService>();
 
 var app = builder.Build();
 

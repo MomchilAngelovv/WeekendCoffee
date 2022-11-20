@@ -10,22 +10,37 @@
 	{
 		string GenerateLabelAsync(bool upcoming);
 		Task<Meeting> GetByLabelAsync(string label);
-		Task<Meeting> CreateAsync(DateTime occursOn);
+		Task<Meeting> CreateAsync(DateTime occursOnDate);
 	}
 
 	public class MeetingsService : IMeetingsService
 	{
 		private readonly WeekendCoffeeDbContext db;
+		private readonly ISettingsService settingsService;
 
 		public MeetingsService(
-			WeekendCoffeeDbContext db)
+			WeekendCoffeeDbContext db,
+			ISettingsService settingsService)
 		{
 			this.db = db;
+			this.settingsService = settingsService;
 		}
 
-		public async Task<Meeting> CreateAsync(DateTime occursOn)
+		public async Task<Meeting> CreateAsync(DateTime occursOnDate)
 		{
-			var label = $"{occursOn.ToString("MMMM", CultureInfo.InvariantCulture)}_{occursOn.Day}_{occursOn.Year}";
+			var meetingSettings = await settingsService.GetMeetingTimeAsync();
+
+			if (meetingSettings is null || meetingSettings.Count != 2)
+			{
+				return null;
+			}
+
+			var hoursValue = int.Parse(meetingSettings.First(m => m.Key == "Hours").Value);
+			var minutesValue = int.Parse(meetingSettings.First(m => m.Key == "Minutes").Value);
+
+			var occursOn = new DateTime(occursOnDate.Year, occursOnDate.Month, occursOnDate.Day, hoursValue, minutesValue, 0);
+			var label = $"{occursOn.Hour}:{occursOn.Minute}_{occursOn.DayOfWeek}_{occursOn.Day}_{occursOn.ToString("MMMM", CultureInfo.InvariantCulture)}_{occursOn.Year}";
+
 			var newMeeting = new Meeting
 			{
 				Label = label,
@@ -79,7 +94,7 @@
 				currentSaturdayDate = currentSaturdayDate.AddDays(7);
 			}
 
-			var label = $"{currentSaturdayDate.ToString("MMMM", CultureInfo.InvariantCulture)}_{currentSaturdayDate.Day}_{currentSaturdayDate.Year}";
+			var label = $"{currentSaturdayDate.Hour}:{currentSaturdayDate.Minute}_{currentSaturdayDate.DayOfWeek}_{currentSaturdayDate.Day}_{currentSaturdayDate.ToString("MMMM", CultureInfo.InvariantCulture)}_{currentSaturdayDate.Year}";
 			return label;
 		}
 	}

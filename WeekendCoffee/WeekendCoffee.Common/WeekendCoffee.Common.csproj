@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WeekendCoffee.Common\WeekendCoffee.Common.csproj" />
-    <ProjectReference Include="..\WeekendCoffee.Data\WeekendCoffee.Data.csproj" />
-  </ItemGroup>
-
 </Project>

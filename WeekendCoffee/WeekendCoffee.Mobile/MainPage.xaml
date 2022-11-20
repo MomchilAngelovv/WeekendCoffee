@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WeekendCoffee.Mobile.MainPage">
+             x:Class="WeekendCoffee.Mobile.MainPage"
+			 xmlns:viewmodel="clr-namespace:WeekendCoffee.Mobile.Models.ViewModels"
+			 x:DataType="viewmodel:MaingPageViewModel">
 
 	<Grid RowDefinitions="100, 50, Auto, *" ColumnDefinitions=".70*, .30*" Padding="10" RowSpacing="10" ColumnSpacing="10">
 
@@ -10,25 +12,18 @@
 		</Border>
 
 		<Border Grid.Row="1" Grid.Column="0" Padding="5">
-			<Entry x:Name="Number" Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
+			<Entry Text="{Binding MemberId}" Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
 		</Border>
 
-		<Button x:Name="AddButton" Text="Add" Grid.Row="1" Grid.Column="1" Clicked="OnAddButtonClicked"/>
+		<Button x:Name="AddButton" Text="Add" Grid.Row="1" Grid.Column="1" Command="{Binding AddMemberCommand}"/>
 
 		<Border Grid.Row="2" Grid.ColumnSpan="2" Padding="5">
-			<Label x:Name="CurrentMeetingLabel" Grid.Row="2" Grid.ColumnSpan="2" Text="Loading..." />
+			<Label x:Name="CurrentMeetingLabel" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Label}" />
 		</Border>
 
-		<CollectionView Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="Center">
-			<CollectionView.ItemsSource >
-				<x:Array Type="{x:Type x:String}">
-					<x:String>Misty</x:String>
-					<x:String>Cherkata</x:String>
-					<x:String>Mafiata1</x:String>
-				</x:Array>
-			</CollectionView.ItemsSource>
+		<CollectionView Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="Center" ItemsSource="{Binding Members}">
 			<CollectionView.ItemTemplate>
-				<DataTemplate>
+				<DataTemplate x:DataType="{x:Type x:String}">
 					<Grid Padding="0,0,0,5">
 						<Frame>
 							<Label Text="{Binding .}" FontSize="20"/>
