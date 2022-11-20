@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using WeekendCoffee.Mobile.Models.Responses;
 
 namespace WeekendCoffee.Mobile
@@ -29,14 +33,32 @@ namespace WeekendCoffee.Mobile
 		{
 			try
 			{
-				//TODO Fix url and permision stuff
-				var response = await _httpClient.GetAsync($"http://10.0.2.2:5281/meetings/current");
-				if (!response.IsSuccessStatusCode)
+				if (string.IsNullOrWhiteSpace(Number.Text))
+				{
+					return;
+				}
+
+				var contentObject = new
+				{
+					MemberId = Number.Text,	
+				};
+
+				//var content = new StringContent(contentObject.ToString(), Encoding.UTF8, "application/json");
+				//content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+				var addPlayerResponse = await _httpClient.PostAsJsonAsync($"http://10.0.2.2:5281/Attendances", contentObject);
+				if (!addPlayerResponse.IsSuccessStatusCode)
+				{
+					//SOMETHING
+					return;
+				}
+
+				var currentMeetingResponse = await _httpClient.GetAsync($"http://10.0.2.2:5281/meetings/current");
+				if (!currentMeetingResponse.IsSuccessStatusCode)
 				{
 					//SOMETHING
 				}
 
-				var responseBody = await response.Content.ReadAsStringAsync();
+				var responseBody = await currentMeetingResponse.Content.ReadAsStringAsync();
 				if (string.IsNullOrWhiteSpace(responseBody))
 				{
 					//SOMETHING
