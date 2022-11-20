@@ -21,7 +21,16 @@
 		public async Task<IActionResult> Post(AddMemberRequestModel requestModel)
 		{
 			var newMember = await this.membersService.AddMemberAsync(requestModel.Name, requestModel.NickName, requestModel.PhoneNumber);
-			return this.Ok(newMember);
+
+			var response = new 
+			{
+				newMember.Id,
+				newMember.Name,
+				newMember.NickName,
+				newMember.PhoneNumber
+			};
+
+			return this.Ok(response);
 		}
 	}
 }
