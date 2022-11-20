@@ -36,22 +36,19 @@ namespace WeekendCoffee.Mobile
 					//SOMETHING
 				}
 
-				var data = JsonSerializer.Deserialize<MeetingResponseModel>(await response.Content.ReadAsStringAsync());
-				AddButton.Text = data.Label;
+				var responseBody = await response.Content.ReadAsStringAsync();
+				if (string.IsNullOrWhiteSpace(responseBody))
+				{
+					//SOMETHING
+				}
+
+				var data = JsonSerializer.Deserialize<MeetingResponseModel>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+				CurrentMeetingLabel.Text = data.Label;
 			}
 			catch (Exception ex)
 			{
 
 			}
-			
-			//count++;
-
-			//if (count == 1)
-			//	CounterBtn.Text = $"Clicked {count} time";
-			//else
-			//	CounterBtn.Text = $"Clicked {count} times";
-
-			//SemanticScreenReader.Announce(CounterBtn.Text);
 		}
 	}
 }

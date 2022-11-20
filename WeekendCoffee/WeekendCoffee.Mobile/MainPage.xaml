@@ -10,13 +10,13 @@
 		</Border>
 
 		<Border Grid.Row="1" Grid.Column="0" Padding="5">
-			<Entry Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
+			<Entry x:Name="Number" Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
 		</Border>
 		
 		<Button x:Name="AddButton" Text="Add" Grid.Row="1" Grid.Column="1" Clicked="OnAddButtonClicked"/>
 
 		<Border Grid.Row="2" Grid.ColumnSpan="2" Padding="5">
-			<Label Grid.Row="2" Grid.ColumnSpan="2" Text="19_November_2002 - Weekend coffee with Misty" />
+			<Label x:Name="CurrentMeetingLabel" Grid.Row="2" Grid.ColumnSpan="2" Text="Loading..." />
 		</Border>
 		
 		<Border Grid.Row="3" Grid.ColumnSpan="2" Padding="5">
