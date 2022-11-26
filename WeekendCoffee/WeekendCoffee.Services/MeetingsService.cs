@@ -57,6 +57,8 @@
 		{
 			var currentMeeting = await this.db.Meetings
 				.Where(m => DateTime.UtcNow >= m.OccursOn)
+				.Include(m => m.Attendances)
+					.ThenInclude(a => a.Member)
 				.OrderByDescending(m => m.OccursOn)
 				.FirstOrDefaultAsync();
 
@@ -65,10 +67,10 @@
 
 		public async Task<Meeting> GetUpcomingAsync()
 		{
+			var currentMeeting = await this.GetCurrentAsync();
+
 			var upcomingMeeting = await this.db.Meetings
-				.Where(m => DateTime.UtcNow >= m.OccursOn)
-				.OrderByDescending(m => m.OccursOn)
-				.Skip(1)
+				.Where(m => currentMeeting.OccursOn.AddDays(7) == m.OccursOn)
 				.FirstOrDefaultAsync();
 
 			return upcomingMeeting;
