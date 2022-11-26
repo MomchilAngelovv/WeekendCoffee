@@ -2,10 +2,10 @@
 {
 	using Microsoft.AspNetCore.Mvc;
 
+	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Requests;
 	using WeekendCoffee.Api.Models.Responses;
-	using WeekendCoffee.Common;
 
 	[ApiController]
 	[Route("[controller]")]

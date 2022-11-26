@@ -6,8 +6,9 @@
 
 	public interface IMembersService
 	{
-		Task<Member> AddMemberAsync(string firstName, string middleName, string lastName, string nickName, string phoneNumber);
+		Task<Member> InsertOneAsync(string firstName, string middleName, string lastName, string nickName, string phoneNumber);
 		Task<Member> GetOneAsync(int id);
+		Task<Member> GetOneAsync(string nickName);
 	}
 
 	public class MembersService : IMembersService
@@ -20,7 +21,7 @@
 			this.db = db;
 		}
 
-		public async Task<Member> AddMemberAsync(string firstName, string middleName, string lastName, string nickName, string phoneNumber)
+		public async Task<Member> InsertOneAsync(string firstName, string middleName, string lastName, string nickName, string phoneNumber)
 		{
 			var newMember = new Member
 			{
@@ -40,6 +41,11 @@
 		public async Task<Member> GetOneAsync(int id)
 		{
 			return await this.db.Members.SingleOrDefaultAsync(m => m.Id == id);
+		}
+
+		public async Task<Member> GetOneAsync(string nickName)
+		{
+			return await this.db.Members.SingleOrDefaultAsync(m => m.NickName == nickName);
 		}
 	}
 }

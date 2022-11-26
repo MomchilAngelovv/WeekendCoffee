@@ -2,16 +2,14 @@
 {
 	using System.Globalization;
 
-	using Microsoft.EntityFrameworkCore;
-	using WeekendCoffee.Common;
 	using WeekendCoffee.Data;
+	using WeekendCoffee.Common;
+	using Microsoft.EntityFrameworkCore;
 
 	public interface IMeetingsService
 	{
-		string GenerateLabelAsync(bool upcoming);
 		Task<Meeting> GetCurrentAsync();
 		Task<Meeting> GetUpcomingAsync();
-		//Task<Meeting> GetByLabelAsync(string label);
 		Task<Meeting> InsertOneAsync(DateTime occursOnDate);
 	}
 
@@ -65,14 +63,6 @@
 			return currentMeeting;
 		}
 
-		public async Task<Meeting> GetByLabelAsync(string label)
-		{
-			return await this.db.Meetings
-				.Include(m => m.Attendances)
-					.ThenInclude(a => a.Member)
-				.SingleOrDefaultAsync(m => m.Label == label);
-		}
-
 		public async Task<Meeting> GetUpcomingAsync()
 		{
 			var upcomingMeeting = await this.db.Meetings
@@ -81,23 +71,6 @@
 				.FirstOrDefaultAsync();
 
 			return upcomingMeeting;
-		}
-
-		public string GenerateLabelAsync(bool upcoming)
-		{
-			var currentSaturdayDate = DateTime.UtcNow;
-			while (currentSaturdayDate.DayOfWeek != DayOfWeek.Saturday)
-			{
-				currentSaturdayDate = currentSaturdayDate.AddDays(1);
-			}
-
-			if (upcoming)
-			{
-				currentSaturdayDate = currentSaturdayDate.AddDays(7);
-			}
-
-			var label = $"{currentSaturdayDate.Hour}:{currentSaturdayDate.Minute}_{currentSaturdayDate.DayOfWeek}_{currentSaturdayDate.Day}_{currentSaturdayDate.ToString("MMMM", CultureInfo.InvariantCulture)}_{currentSaturdayDate.Year}";
-			return label;
 		}
 	}
 }	

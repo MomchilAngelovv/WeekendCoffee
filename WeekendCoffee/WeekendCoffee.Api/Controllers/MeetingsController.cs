@@ -2,14 +2,13 @@
 {
 	using Microsoft.AspNetCore.Mvc;
 
+	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Responses;
-	using WeekendCoffee.Api.Models;
-	using WeekendCoffee.Common;
 
 	[ApiController]
 	[Route("[controller]")]
-	public class MeetingsController : ControllerBase
+	public class MeetingsController : BaseController
 	{
 		private readonly IMeetingsService meetingsService;
 
@@ -22,9 +21,6 @@
 		[HttpGet("current")]
 		public async Task<IActionResult> GetCurrentMeetingInformation()
 		{
-			var response = new ControllerResponse<MeetingInformationResponse>();
-
-			//var currentMeetingLabel = this.meetingsService.GenerateLabelAsync(false);
 			var currentMeeting = await meetingsService.GetCurrentAsync();
 			if (currentMeeting is null)
 			{
@@ -38,13 +34,10 @@
 
 				if (currentMeeting is null)
 				{
-					response.Status = GlobalConstants.Error;
-					response.ErrorMessage = GlobalErrorMessages.CannotCreateMeeting;
-					return this.Ok(response);
+					return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 				}
 			}
 
-			//var upcomingMeetingLabel = this.meetingsService.GenerateLabelAsync(true);
 			var upcomingMeeting = await meetingsService.GetUpcomingAsync();
 			if (upcomingMeeting is null)
 			{
@@ -58,28 +51,23 @@
 
 				if (upcomingMeeting is null)
 				{
-					response.Status = GlobalConstants.Error;
-					response.ErrorMessage = GlobalErrorMessages.CannotCreateMeeting;
-					return this.Ok(response);
+					return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 				}
 			}
 
-			//TODO Fix warnings
-			response.Status = GlobalConstants.Success;
-			response.ErrorMessage = GlobalConstants.NotAvailable;
-			response.Data = new MeetingInformationResponse
+			var responseData = new MeetingInformationResponse
 			{
 				Label = upcomingMeeting.Label,
 			};
 
 			if (currentMeeting.Attendances is not null)
 			{
-				response.Data.Members = currentMeeting.Attendances
+				responseData.Members = currentMeeting.Attendances
 					.Select(a => a.Member.NickName)
 					.ToList();
 			}
 
-			return this.Ok(response);
+			return this.SuccessResponse(responseData);
 		}
 	}
 }

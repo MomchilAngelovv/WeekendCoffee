@@ -6,13 +6,12 @@
 
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
-	using WeekendCoffee.Api.Models;
 	using WeekendCoffee.Api.Models.Requests;
 	using WeekendCoffee.Api.Models.Responses;
 
 	[ApiController]
 	[Route("[controller]")]
-	public class MembersController : ControllerBase
+	public class MembersController : BaseController
 	{
 		private readonly IMembersService membersService;
 
@@ -25,12 +24,15 @@
 		[HttpPost]
 		public async Task<IActionResult> InsertMember(InsertMemberRequest request)
 		{
-			var response = new ControllerResponse<InsertMemberResponse>();
-			var newMember = await this.membersService.AddMemberAsync(request.FirstName, request.MiddleName, request.LastName, request.NickName, request.PhoneNumber);
+			var existingMember = this.membersService.GetOneAsync(request.NickName);
+			if (existingMember is not null) 
+			{
+				return ErrorResponse(GlobalErrorMessages.MemberAlreadyExists);
+			}
 
-			response.Status = GlobalConstants.Success;
-			response.ErrorMessage = GlobalConstants.NotAvailable;
-			response.Data = new InsertMemberResponse
+			var newMember = await this.membersService.InsertOneAsync(request.FirstName, request.MiddleName, request.LastName, request.NickName, request.PhoneNumber);
+
+			var responseData = new InsertMemberResponse
 			{
 				Id = newMember.Id,
 				FirstName = newMember.FirstName,
@@ -40,7 +42,7 @@
 				PhoneNumber = newMember.PhoneNumber
 			};
 
-			return this.Ok(response);
+			return this.SuccessResponse(responseData);
 		}
 	}
 }
