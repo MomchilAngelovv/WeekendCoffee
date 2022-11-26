@@ -6,6 +6,6 @@
     {
         [Required]
         public int MemberId { get; set; }
-        public string Comment { get; set; }
+		public string? Comment { get; set; }
     }
 }

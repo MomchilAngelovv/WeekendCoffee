@@ -53,7 +53,7 @@
 
 			if (!response.IsSuccessStatusCode)
 			{
-				//Think logic if not successfull response;
+				var body = await response.Content.ReadAsStringAsync();
 				return;
 			}
 
@@ -88,7 +88,7 @@
 
 			var controllerResponse = JsonSerializer.Deserialize<ControllerResponse<MeetingInformationResponse>>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-			Label = $"Saturday_09:30_{controllerResponse.Data.Label}"; 
+			Label = $"{controllerResponse.Data.Label}"; 
 			Members.Clear();
 			foreach (var member in controllerResponse.Data.Members)
 			{

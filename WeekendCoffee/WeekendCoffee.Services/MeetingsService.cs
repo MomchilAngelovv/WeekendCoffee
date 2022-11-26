@@ -66,8 +66,9 @@
 		public async Task<Meeting> GetUpcomingAsync()
 		{
 			var upcomingMeeting = await this.db.Meetings
-				.Where(m => DateTime.UtcNow < m.OccursOn)
+				.Where(m => DateTime.UtcNow >= m.OccursOn)
 				.OrderByDescending(m => m.OccursOn)
+				.Skip(1)
 				.FirstOrDefaultAsync();
 
 			return upcomingMeeting;

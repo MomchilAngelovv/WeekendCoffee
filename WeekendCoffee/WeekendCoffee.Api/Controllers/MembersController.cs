@@ -9,8 +9,6 @@
 	using WeekendCoffee.Api.Models.Requests;
 	using WeekendCoffee.Api.Models.Responses;
 
-	[ApiController]
-	[Route("[controller]")]
 	public class MembersController : BaseController
 	{
 		private readonly IMembersService membersService;
@@ -24,7 +22,7 @@
 		[HttpPost]
 		public async Task<IActionResult> InsertMember(InsertMemberRequest request)
 		{
-			var existingMember = this.membersService.GetOneAsync(request.NickName);
+			var existingMember = await this.membersService.GetOneAsync(request.NickName);
 			if (existingMember is not null) 
 			{
 				return ErrorResponse(GlobalErrorMessages.MemberAlreadyExists);

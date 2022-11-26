@@ -28,7 +28,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -114,7 +113,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NickName")
@@ -122,7 +120,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedOn")

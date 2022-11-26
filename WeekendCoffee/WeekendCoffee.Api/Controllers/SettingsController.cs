@@ -7,8 +7,6 @@
 	using WeekendCoffee.Api.Models.Requests;
 	using WeekendCoffee.Api.Models.Responses;
 
-	[ApiController]
-	[Route("[controller]")]
 	public class SettingsController : BaseController
 	{
 		private readonly ISettingsService settingsService;

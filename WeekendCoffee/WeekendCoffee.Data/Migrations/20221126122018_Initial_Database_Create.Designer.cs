@@ -12,7 +12,7 @@ using WeekendCoffee.Data;
 namespace WeekendCoffee.Data.Migrations
 {
     [DbContext(typeof(WeekendCoffeeDbContext))]
-    [Migration("20221120164010_Initial_Database_Create")]
+    [Migration("20221126122018_Initial_Database_Create")]
     partial class Initial_Database_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -116,7 +115,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NickName")
@@ -124,7 +122,6 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedOn")

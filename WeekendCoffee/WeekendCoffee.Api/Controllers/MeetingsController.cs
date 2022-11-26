@@ -6,8 +6,6 @@
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Responses;
 
-	[ApiController]
-	[Route("[controller]")]
 	public class MeetingsController : BaseController
 	{
 		private readonly IMeetingsService meetingsService;
