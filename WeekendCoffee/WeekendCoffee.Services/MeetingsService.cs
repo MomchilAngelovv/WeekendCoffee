@@ -56,7 +56,7 @@
 		public async Task<Meeting> GetCurrentAsync()
 		{
 			var currentMeeting = await this.db.Meetings
-				.Where(m => DateTime.UtcNow >= m.OccursOn)
+				.Where(m => DateTime.UtcNow < m.OccursOn)
 				.Include(m => m.Attendances)
 					.ThenInclude(a => a.Member)
 				.OrderByDescending(m => m.OccursOn)
