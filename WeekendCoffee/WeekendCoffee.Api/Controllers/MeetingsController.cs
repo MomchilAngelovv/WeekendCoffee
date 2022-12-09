@@ -19,21 +19,10 @@
 		[HttpGet("current")]
 		public async Task<IActionResult> GetCurrentMeetingInformation()
 		{
-			var currentMeeting = await meetingsService.GetCurrentAsync();
+			var currentMeeting = await meetingsService.GetOrCreateCurrentAsync();
 			if (currentMeeting is null)
 			{
-				var currentSaturdayDate = DateTime.UtcNow;
-				while (currentSaturdayDate.DayOfWeek != DayOfWeek.Saturday)
-				{
-					currentSaturdayDate = currentSaturdayDate.AddDays(1);
-				}
-
-				currentMeeting = await this.meetingsService.InsertOneAsync(currentSaturdayDate);
-
-				if (currentMeeting is null)
-				{
-					return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
-				}
+				return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 			}
 
 			var upcomingMeeting = await meetingsService.GetUpcomingAsync();

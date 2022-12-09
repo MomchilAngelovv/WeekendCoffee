@@ -2,13 +2,14 @@
 {
 	using System.Globalization;
 
+	using Microsoft.EntityFrameworkCore;
+
 	using WeekendCoffee.Data;
 	using WeekendCoffee.Common;
-	using Microsoft.EntityFrameworkCore;
 
 	public interface IMeetingsService
 	{
-		Task<Meeting> GetCurrentAsync();
+		Task<Meeting> GetOrCreateCurrentAsync();
 		Task<Meeting> GetUpcomingAsync();
 		Task<Meeting> InsertOneAsync(DateTime occursOnDate);
 	}
@@ -53,21 +54,30 @@
 			return newMeeting;
 		}
 
-		public async Task<Meeting> GetCurrentAsync()
+		public async Task<Meeting> GetOrCreateCurrentAsync()
 		{
+			var currentSaturdayDate = DateTime.UtcNow;
+			while (currentSaturdayDate.DayOfWeek != DayOfWeek.Saturday)
+			{
+				currentSaturdayDate = currentSaturdayDate.AddDays(1);
+			}
+
 			var currentMeeting = await this.db.Meetings
-				.Where(m => DateTime.UtcNow < m.OccursOn)
 				.Include(m => m.Attendances)
 					.ThenInclude(a => a.Member)
-				.OrderByDescending(m => m.OccursOn)
-				.FirstOrDefaultAsync();
+				.FirstOrDefaultAsync(m => m.OccursOn.DayOfYear == currentSaturdayDate.DayOfYear);
+
+			if (currentMeeting is null)
+			{
+				currentMeeting = await this.InsertOneAsync(currentSaturdayDate);
+			}
 
 			return currentMeeting;
 		}
 
 		public async Task<Meeting> GetUpcomingAsync()
 		{
-			var currentMeeting = await this.GetCurrentAsync();
+			var currentMeeting = await this.GetOrCreateCurrentAsync();
 
 			var upcomingMeeting = await this.db.Meetings
 				.Where(m => currentMeeting.OccursOn.AddDays(7) == m.OccursOn)

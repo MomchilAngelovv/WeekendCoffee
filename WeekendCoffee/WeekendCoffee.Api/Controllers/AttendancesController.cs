@@ -28,7 +28,7 @@
 		[HttpPost]
 		public async Task<IActionResult> SignMemberForMeeting(SignMemberForMeetingRequest request)
 		{
-			var currentMeeting = await meetingsService.GetCurrentAsync();
+			var currentMeeting = await meetingsService.GetOrCreateCurrentAsync();
 			if (currentMeeting is null)
 			{
 				return this.ErrorResponse(GlobalErrorMessages.CannotFindMeeting);
