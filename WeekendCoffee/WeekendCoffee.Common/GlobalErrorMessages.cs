@@ -10,5 +10,6 @@
 		public const string MemberAlreadySignedForMeeting = "There was a problem when trying to sign up member for meeting! Already signed.";
 
 		public const string SettingWithKeyAlreadyExists = "There is already a setting with the provided key!";
+		public const string SettingDoesNotExists = "Setting does now exists!";
 	}
 }

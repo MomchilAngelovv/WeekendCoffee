@@ -10,6 +10,7 @@
 		Task<List<Setting>> GetMeetingTimeAsync();
 		Task<Setting> GetOneAsync(string key);
 		Task<Setting> InsertOneAsync(string key, string value);
+		Task<Setting> UpdateOneAsync(Setting setting, string newValue);
 	}
 
 	public class SettingsService : ISettingsService
@@ -44,6 +45,16 @@
 			};
 
 			await this.db.Settings.AddAsync(setting);
+			await this.db.SaveChangesAsync();
+
+			return setting;
+		}
+
+		public async Task<Setting> UpdateOneAsync(Setting setting, string newValue)
+		{
+			setting.Value = newValue;
+			setting.UpdatedOn = DateTime.UtcNow;
+
 			await this.db.SaveChangesAsync();
 
 			return setting;

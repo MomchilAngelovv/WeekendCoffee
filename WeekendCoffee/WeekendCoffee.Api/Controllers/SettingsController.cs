@@ -28,9 +28,28 @@
 
 			var newSetting = await this.settingsService.InsertOneAsync(request.Key, request.Value);
 
-			var responseData = new InsertSettingResponse
+			var responseData = new
 			{
-				Id = newSetting.Id
+				newSetting.Id
+			};
+
+			return this.SuccessResponse(responseData);
+		}
+
+		[HttpPut("{key}")]
+		public async Task<IActionResult> UpdateSetting(string key, UpdateSettingRequest request)
+		{
+			var setting = await this.settingsService.GetOneAsync(key);
+			if (setting is null)
+			{
+				return this.ErrorResponse(GlobalErrorMessages.SettingDoesNotExists);
+			}
+
+			var newSetting = await this.settingsService.UpdateOneAsync(setting, request.NewValue);
+
+			var responseData = new
+			{
+				newSetting.Id,
 			};
 
 			return this.SuccessResponse(responseData);
