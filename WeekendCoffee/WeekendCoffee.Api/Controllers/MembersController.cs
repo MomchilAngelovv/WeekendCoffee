@@ -30,6 +30,7 @@
 
 			var newMember = await this.membersService.InsertOneAsync(request.FirstName, request.MiddleName, request.LastName, request.NickName, request.PhoneNumber);
 
+			//TODO Remove response models;
 			var responseData = new InsertMemberResponse
 			{
 				Id = newMember.Id,

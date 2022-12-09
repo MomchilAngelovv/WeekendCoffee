@@ -10,7 +10,8 @@
 	public interface IMeetingsService
 	{
 		Task<Meeting> GetOrCreateCurrentAsync();
-		Task<Meeting> GetUpcomingAsync();
+		Task<Meeting> GetOrCreateUpcomingAsync();
+
 		Task<Meeting> InsertOneAsync(DateTime occursOnDate);
 	}
 
@@ -65,7 +66,7 @@
 			var currentMeeting = await this.db.Meetings
 				.Include(m => m.Attendances)
 					.ThenInclude(a => a.Member)
-				.FirstOrDefaultAsync(m => m.OccursOn.DayOfYear == currentSaturdayDate.DayOfYear);
+				.FirstOrDefaultAsync(m => m.OccursOn.Date == currentSaturdayDate.Date);
 
 			if (currentMeeting is null)
 			{
@@ -75,13 +76,19 @@
 			return currentMeeting;
 		}
 
-		public async Task<Meeting> GetUpcomingAsync()
+		public async Task<Meeting> GetOrCreateUpcomingAsync()
 		{
 			var currentMeeting = await this.GetOrCreateCurrentAsync();
+			var upcomingMeetingDate = currentMeeting.OccursOn.Date.AddDays(7);
 
 			var upcomingMeeting = await this.db.Meetings
-				.Where(m => currentMeeting.OccursOn.AddDays(7) == m.OccursOn)
+				.Where(m => m.OccursOn.Date == upcomingMeetingDate)
 				.FirstOrDefaultAsync();
+
+			if (upcomingMeeting is null)
+			{
+				upcomingMeeting = await this.InsertOneAsync(upcomingMeetingDate);
+			}
 
 			return upcomingMeeting;
 		}

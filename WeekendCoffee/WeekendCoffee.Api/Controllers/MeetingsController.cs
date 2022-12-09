@@ -25,21 +25,11 @@
 				return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 			}
 
-			var upcomingMeeting = await meetingsService.GetUpcomingAsync();
+			var upcomingMeeting = await meetingsService.GetOrCreateUpcomingAsync();
 			if (upcomingMeeting is null)
 			{
-				var upcomingMeetingDate = DateTime.UtcNow.AddDays(7);
-				while (upcomingMeetingDate.DayOfWeek != DayOfWeek.Saturday)
-				{
-					upcomingMeetingDate = upcomingMeetingDate.AddDays(1);
-				}
-
-				upcomingMeeting = await this.meetingsService.InsertOneAsync(upcomingMeetingDate);
-
-				if (upcomingMeeting is null)
-				{
-					return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
-				}
+				//TODO Error message I dont like
+				return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 			}
 
 			var responseData = new MeetingInformationResponse
@@ -47,6 +37,7 @@
 				Label = upcomingMeeting.Label,
 			};
 
+			//TODO This IF is not needed. I can remove it when removing the response models
 			if (currentMeeting.Attendances is not null)
 			{
 				responseData.Members = currentMeeting.Attendances
