@@ -13,9 +13,9 @@
 	{
 		private readonly HttpClient _httpClient;
 
-		public MaingPageViewModel()
+		public MaingPageViewModel(HttpClient httpClient)
 		{
-			_httpClient = new HttpClient();
+			_httpClient = httpClient;
 			members = new ObservableCollection<string>();
 		}
 
@@ -44,7 +44,7 @@
 			var response = default(HttpResponseMessage);
 			try
 			{
-				response = await _httpClient.PostAsJsonAsync($"http://10.0.2.2:5281/Attendances", contentObject);
+				response = await _httpClient.PostAsJsonAsync($"/Attendances", contentObject);
 			}
 			catch (Exception ex)
 			{
@@ -66,7 +66,7 @@
 			var response = default(HttpResponseMessage);
 			try
 			{
-				response = await _httpClient.GetAsync($"http://10.0.2.2:5281/meetings/current");
+				response = await _httpClient.GetAsync($"/meetings/current");
 			}
 			catch (Exception ex)
 			{
