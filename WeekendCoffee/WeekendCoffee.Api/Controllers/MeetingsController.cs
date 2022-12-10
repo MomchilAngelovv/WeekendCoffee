@@ -4,7 +4,6 @@
 
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
-	using WeekendCoffee.Api.Models.Responses;
 
 	public class MeetingsController : BaseController
 	{
@@ -32,18 +31,11 @@
 				return this.ErrorResponse(GlobalErrorMessages.CannotCreateMeeting);
 			}
 
-			var responseData = new MeetingInformationResponse
+			var responseData = new 
 			{
-				Label = upcomingMeeting.Label,
+				upcomingMeeting.Label,
+				Members = currentMeeting.Attendances.Select(a => a.Member.NickName).ToList()
 			};
-
-			//TODO This IF is not needed. I can remove it when removing the response models
-			if (currentMeeting.Attendances is not null)
-			{
-				responseData.Members = currentMeeting.Attendances
-					.Select(a => a.Member.NickName)
-					.ToList();
-			}
 
 			return this.SuccessResponse(responseData);
 		}

@@ -12,7 +12,7 @@
 		public string Label { get; set; }
 		public DateTime OccursOn { get; set; }
 
-		public virtual ICollection<Attendance> Attendances { get; set; }
+		public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
 
 		public DateTime CreatedOn { get; set; }
 		public DateTime? UpdatedOn { get; set; }

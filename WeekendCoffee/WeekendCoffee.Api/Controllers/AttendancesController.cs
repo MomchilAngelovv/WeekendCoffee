@@ -7,7 +7,6 @@
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Requests;
-	using WeekendCoffee.Api.Models.Responses;
 
 	public class AttendancesController : BaseController
 	{
@@ -48,9 +47,9 @@
 
 			var attendance = await this.attendancesService.SignMemberForMeetingAsync(currentMeeting.Id, member.Id, request.Comment);
 
-			var responseData = new SignUpForMeetingResponse
+			var responseData = new 
 			{
-				Id = attendance.Id,
+				attendance.Id,
 			};
 
 			return this.SuccessResponse(responseData);

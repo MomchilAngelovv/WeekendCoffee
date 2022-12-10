@@ -5,7 +5,6 @@
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Requests;
-	using WeekendCoffee.Api.Models.Responses;
 
 	public class SettingsController : BaseController
 	{
@@ -45,11 +44,13 @@
 				return this.ErrorResponse(GlobalErrorMessages.SettingDoesNotExists);
 			}
 
-			var newSetting = await this.settingsService.UpdateOneAsync(setting, request.NewValue);
+			var updatedSetting = await this.settingsService.UpdateOneAsync(setting, request.NewValue);
 
 			var responseData = new
 			{
-				newSetting.Id,
+				updatedSetting.Id,
+				updatedSetting.Key,
+				updatedSetting.Value
 			};
 
 			return this.SuccessResponse(responseData);

@@ -12,7 +12,7 @@ using WeekendCoffee.Data;
 namespace WeekendCoffee.Data.Migrations
 {
     [DbContext(typeof(WeekendCoffeeDbContext))]
-    [Migration("20221126122018_Initial_Database_Create")]
+    [Migration("20221210132737_Initial_Database_Create")]
     partial class Initial_Database_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,6 +118,10 @@ namespace WeekendCoffee.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
