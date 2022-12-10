@@ -11,7 +11,6 @@
 	{
 		Task<Meeting> GetOrCreateCurrentAsync();
 		Task<Meeting> GetOrCreateUpcomingAsync();
-
 		Task<Meeting> InsertOneAsync(DateTime occursOnDate);
 	}
 
@@ -28,6 +27,42 @@
 			this.settingsService = settingsService;
 		}
 
+		public async Task<Meeting> GetOrCreateCurrentAsync()
+		{
+			var currentSaturdayDate = DateTime.UtcNow;
+			while (currentSaturdayDate.DayOfWeek != DayOfWeek.Saturday)
+			{
+				currentSaturdayDate = currentSaturdayDate.AddDays(1);
+			}
+
+			var currentMeeting = await this.db.Meetings
+				.Include(m => m.Attendances)
+					.ThenInclude(a => a.Member)
+				.FirstOrDefaultAsync(m => m.OccursOn.Date == currentSaturdayDate.Date);
+
+			if (currentMeeting is null)
+			{
+				currentMeeting = await this.InsertOneAsync(currentSaturdayDate);
+			}
+
+			return currentMeeting;
+		}
+		public async Task<Meeting> GetOrCreateUpcomingAsync()
+		{
+			var currentMeeting = await this.GetOrCreateCurrentAsync();
+			var upcomingMeetingDate = currentMeeting.OccursOn.Date.AddDays(7);
+
+			var upcomingMeeting = await this.db.Meetings
+				.Where(m => m.OccursOn.Date == upcomingMeetingDate)
+				.FirstOrDefaultAsync();
+
+			if (upcomingMeeting is null)
+			{
+				upcomingMeeting = await this.InsertOneAsync(upcomingMeetingDate);
+			}
+
+			return upcomingMeeting;
+		}
 		public async Task<Meeting> InsertOneAsync(DateTime occursOnDate)
 		{
 			var meetingSettings = await settingsService.GetMeetingTimeAsync();
@@ -53,44 +88,6 @@
 			await this.db.SaveChangesAsync();
 
 			return newMeeting;
-		}
-
-		public async Task<Meeting> GetOrCreateCurrentAsync()
-		{
-			var currentSaturdayDate = DateTime.UtcNow;
-			while (currentSaturdayDate.DayOfWeek != DayOfWeek.Saturday)
-			{
-				currentSaturdayDate = currentSaturdayDate.AddDays(1);
-			}
-
-			var currentMeeting = await this.db.Meetings
-				.Include(m => m.Attendances)
-					.ThenInclude(a => a.Member)
-				.FirstOrDefaultAsync(m => m.OccursOn.Date == currentSaturdayDate.Date);
-
-			if (currentMeeting is null)
-			{
-				currentMeeting = await this.InsertOneAsync(currentSaturdayDate);
-			}
-
-			return currentMeeting;
-		}
-
-		public async Task<Meeting> GetOrCreateUpcomingAsync()
-		{
-			var currentMeeting = await this.GetOrCreateCurrentAsync();
-			var upcomingMeetingDate = currentMeeting.OccursOn.Date.AddDays(7);
-
-			var upcomingMeeting = await this.db.Meetings
-				.Where(m => m.OccursOn.Date == upcomingMeetingDate)
-				.FirstOrDefaultAsync();
-
-			if (upcomingMeeting is null)
-			{
-				upcomingMeeting = await this.InsertOneAsync(upcomingMeetingDate);
-			}
-
-			return upcomingMeeting;
 		}
 	}
 }	

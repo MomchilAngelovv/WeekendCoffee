@@ -5,7 +5,7 @@
 	public class SignMemberForMeetingRequest
     {
         [Required]
-        public int MemberId { get; set; }
+        public string MemberId { get; set; }
 		public string? Comment { get; set; }
     }
 }

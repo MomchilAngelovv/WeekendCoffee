@@ -6,8 +6,8 @@
 
 	public interface IAttendancesService
 	{
-		Task<Attendance> SignMemberForMeetingAsync(string meetingId, int memberId, string comment);
 		Task<Attendance> GetOneAsync(string meetingId, int memberId);
+		Task<Attendance> SignMemberForMeetingAsync(string meetingId, int memberId, string comment);
 	}
 
 	public class AttendancesService : IAttendancesService
@@ -25,7 +25,6 @@
 			return await this.db.Attendances
 				.SingleOrDefaultAsync(a => a.MeetingId == meetingId && a.MemberId == memberId);
 		}
-
 		public async Task<Attendance> SignMemberForMeetingAsync(string meetingId, int memberId, string comment)
 		{
 			var newAttendance = new Attendance

@@ -7,8 +7,8 @@
 
 	public interface ISettingsService
 	{
-		Task<List<Setting>> GetMeetingTimeAsync();
 		Task<Setting> GetOneAsync(string key);
+		Task<List<Setting>> GetMeetingTimeAsync();
 		Task<Setting> InsertOneAsync(string key, string value);
 		Task<Setting> UpdateOneAsync(Setting setting, string newValue);
 	}
@@ -23,19 +23,17 @@
 			this.db = db;
 		}
 
+		public async Task<Setting> GetOneAsync(string key)
+		{
+			return await this.db.Settings
+				.SingleOrDefaultAsync(s => s.Key == key);
+		}
 		public async Task<List<Setting>> GetMeetingTimeAsync()
 		{
 			return await this.db.Settings
 				.Where(s => s.Key == GlobalConstants.HoursSettingKey || s.Key == GlobalConstants.MinutesSettingKey)
 				.ToListAsync();
 		}
-
-		public async Task<Setting> GetOneAsync(string key)
-		{
-			return await this.db.Settings
-				.SingleOrDefaultAsync(s => s.Key == key);
-		}
-
 		public async Task<Setting> InsertOneAsync(string key, string value)
 		{
 			var setting = new Setting
@@ -49,7 +47,6 @@
 
 			return setting;
 		}
-
 		public async Task<Setting> UpdateOneAsync(Setting setting, string newValue)
 		{
 			setting.Value = newValue;
