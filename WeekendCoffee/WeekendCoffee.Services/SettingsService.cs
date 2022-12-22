@@ -7,7 +7,9 @@
 
 	public interface ISettingsService
 	{
+		Task<Setting> GetOneAsync(int id);
 		Task<Setting> GetOneAsync(string key);
+		Task<List<Setting>> GetManyAsync();
 		Task<List<Setting>> GetMeetingTimeAsync();
 		Task<Setting> InsertOneAsync(string key, string value);
 		Task<Setting> UpdateOneAsync(Setting setting, string newValue);
@@ -23,10 +25,20 @@
 			this.db = db;
 		}
 
+		public async Task<Setting> GetOneAsync(int id)
+		{
+			return await this.db.Settings
+				.SingleOrDefaultAsync(s => s.Id == id);
+		}
 		public async Task<Setting> GetOneAsync(string key)
 		{
 			return await this.db.Settings
 				.SingleOrDefaultAsync(s => s.Key == key);
+		}
+		public async Task<List<Setting>> GetManyAsync()
+		{
+			return await this.db.Settings
+				.ToListAsync();
 		}
 		public async Task<List<Setting>> GetMeetingTimeAsync()
 		{

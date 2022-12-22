@@ -16,6 +16,24 @@
 			this.settingsService = settingsService;
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> GetMany()
+		{
+			var settings = await this.settingsService.GetManyAsync();
+
+			var responseData = new
+			{
+				Settings = settings.Select(s => new
+				{
+					s.Id,
+					s.Key, 
+					s.Value
+				})
+			};
+
+			return this.SuccessResponse(responseData);
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> InsertSetting(InsertSettingRequest request)
 		{
@@ -35,10 +53,10 @@
 			return this.SuccessResponse(responseData);
 		}
 
-		[HttpPut("{key}")]
-		public async Task<IActionResult> UpdateSetting(string key, UpdateSettingRequest request)
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateSetting(int id, UpdateSettingRequest request)
 		{
-			var setting = await this.settingsService.GetOneAsync(key);
+			var setting = await this.settingsService.GetOneAsync(id);
 			if (setting is null)
 			{
 				return this.ErrorResponse(GlobalErrorMessages.SettingDoesNotExists);
