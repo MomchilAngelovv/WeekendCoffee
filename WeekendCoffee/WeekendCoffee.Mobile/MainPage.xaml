@@ -5,14 +5,14 @@
 			 xmlns:viewmodel="clr-namespace:WeekendCoffee.Mobile.Models.ViewModels"
 			 x:DataType="viewmodel:MaingPageViewModel">
 
-	<Grid RowDefinitions="100, 50, Auto, *" ColumnDefinitions=".70*, .30*" Padding="10" RowSpacing="10" ColumnSpacing="10">
+	<Grid RowDefinitions="100, 50, Auto, *" ColumnDefinitions=".70*, .30*" Padding="10" RowSpacing="10" ColumnSpacing="10" BackgroundColor="Black">
 
 		<Border Grid.Row="0" Grid.ColumnSpan="2" >
 			<Image Source="asta_logo.jpg" BackgroundColor="Black"/>
 		</Border>
 
 		<Border Grid.Row="1" Grid.Column="0" Padding="5">
-			<Entry Text="{Binding MemberId}" Placeholder="Enter your number" Grid.Row="1"	Grid.Column="0"/>
+			<Entry Text="{Binding MemberId}" Placeholder="Enter your number" Grid.Row="1" Grid.Column="0"/>
 		</Border>
 
 		<Button x:Name="AddButton" Text="Add" Grid.Row="1" Grid.Column="1" Command="{Binding AddMemberCommand}"/>
@@ -25,8 +25,8 @@
 			<CollectionView.ItemTemplate>
 				<DataTemplate x:DataType="{x:Type x:String}">
 					<Grid Padding="0,0,0,5">
-						<Frame>
-							<Label Text="{Binding .}" FontSize="20"/>
+						<Frame BackgroundColor="Orange">
+							<Label Text="{Binding .}" FontSize="20" TextColor="Black"/>
 						</Frame>
 					</Grid>
 				</DataTemplate>
