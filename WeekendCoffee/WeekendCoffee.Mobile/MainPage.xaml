@@ -8,7 +8,7 @@
 	<Grid RowDefinitions="100, 50, Auto, *" ColumnDefinitions=".70*, .30*" Padding="10" RowSpacing="10" ColumnSpacing="10">
 
 		<Border Grid.Row="0" Grid.ColumnSpan="2" >
-			<Image Source="dotnet_bot.svg" BackgroundColor="Grey"/>
+			<Image Source="asta_logo.jpg" BackgroundColor="Black"/>
 		</Border>
 
 		<Border Grid.Row="1" Grid.Column="0" Padding="5">

@@ -17,7 +17,7 @@
 
 			builder.Services.AddSingleton(sp => new HttpClient
 			{ 
-				BaseAddress = new Uri("https://dd69-2a01-5a8-207-17d1-9cc2-d0c0-e8bd-6f26.eu.ngrok.io/")
+				BaseAddress = new Uri("https://e067-95-111-122-30.eu.ngrok.io/")
 			});
 
 			builder.Services.AddTransient<MainPage>();
