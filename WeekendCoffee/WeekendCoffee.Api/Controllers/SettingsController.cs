@@ -51,6 +51,7 @@
 
 			return this.SuccessResponse(responseData);
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> InsertSetting(InsertSettingRequest request)
 		{
@@ -69,6 +70,7 @@
 
 			return this.SuccessResponse(responseData);
 		}
+
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateSetting(int id, UpdateSettingRequest request)
 		{
