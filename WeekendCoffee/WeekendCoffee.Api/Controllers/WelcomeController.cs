@@ -4,6 +4,12 @@
 
 	public class WelcomeController : BaseController
 	{
+		public WelcomeController(
+			)
+		{
+
+		}
+
 		[HttpGet]
 		public IActionResult Welcome()
 		{

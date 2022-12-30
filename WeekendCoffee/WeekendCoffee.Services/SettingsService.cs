@@ -7,6 +7,7 @@
 
 	public interface ISettingsService
 	{
+		//TODO implement filter classes
 		Task<Setting> GetOneAsync(int id);
 		Task<Setting> GetOneAsync(string key);
 		Task<List<Setting>> GetManyAsync();

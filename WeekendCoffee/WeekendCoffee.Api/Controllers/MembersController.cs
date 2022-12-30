@@ -36,7 +36,6 @@
 
 			return this.SuccessResponse(responseData);
 		}
-
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetOne(int id)
 		{

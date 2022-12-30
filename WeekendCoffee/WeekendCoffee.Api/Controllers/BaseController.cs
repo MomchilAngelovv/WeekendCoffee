@@ -20,7 +20,6 @@
 
 			return this.Ok(response);
 		}
-
 		protected IActionResult ErrorResponse(string errorMessage)
 		{
 			var response = new ControllerResponse<object>
