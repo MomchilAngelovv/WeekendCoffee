@@ -5,6 +5,7 @@
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services;
 	using WeekendCoffee.Api.Models.Requests;
+	using WeekendCoffee.Services.FilterModels;
 
 	public class SettingsController : BaseController
 	{
@@ -26,7 +27,7 @@
 				Settings = settings.Select(s => new
 				{
 					s.Id,
-					s.Key, 
+					s.Key,
 					s.Value
 				})
 			};
@@ -55,7 +56,8 @@
 		[HttpPost]
 		public async Task<IActionResult> InsertSetting(InsertSettingRequest request)
 		{
-			var setting = await this.settingsService.GetOneAsync(request.Key);
+			var setting = await this.settingsService.GetOneAsync(new SettingsFilter { KeyEquals = request.Key });
+
 			if (setting is not null)
 			{
 				return this.ErrorResponse(GlobalErrorMessages.SettingWithKeyAlreadyExists);

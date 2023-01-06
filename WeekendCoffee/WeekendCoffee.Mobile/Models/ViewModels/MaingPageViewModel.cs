@@ -15,6 +15,7 @@
 
 		public MaingPageViewModel(HttpClient httpClient)
 		{
+			//TODO Implement wrapper for mobile
 			_httpClient = httpClient;
 			members = new ObservableCollection<string>();
 		}

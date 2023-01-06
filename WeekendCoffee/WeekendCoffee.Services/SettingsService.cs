@@ -4,12 +4,14 @@
 
 	using WeekendCoffee.Data;
 	using WeekendCoffee.Common;
+	using WeekendCoffee.Services.FilterModels;
+	using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 	public interface ISettingsService
 	{
 		//TODO implement filter classes
 		Task<Setting> GetOneAsync(int id);
-		Task<Setting> GetOneAsync(string key);
+		Task<Setting> GetOneAsync(SettingsFilter filter);
 		Task<List<Setting>> GetManyAsync();
 		Task<List<Setting>> GetMeetingTimeAsync();
 		Task<Setting> InsertOneAsync(string key, string value);
@@ -31,10 +33,16 @@
 			return await this.db.Settings
 				.SingleOrDefaultAsync(s => s.Id == id);
 		}
-		public async Task<Setting> GetOneAsync(string key)
+		public async Task<Setting> GetOneAsync(SettingsFilter filter)
 		{
-			return await this.db.Settings
-				.SingleOrDefaultAsync(s => s.Key == key);
+			var settings = this.db.Settings.AsQueryable();
+
+			if (!string.IsNullOrWhiteSpace(filter.KeyEquals))
+			{
+				settings = settings.Where(s => s.Key == filter.KeyEquals);
+			}
+
+			return await settings.SingleOrDefaultAsync();
 		}
 		public async Task<List<Setting>> GetManyAsync()
 		{
