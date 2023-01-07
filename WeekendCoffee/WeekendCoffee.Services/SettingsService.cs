@@ -5,7 +5,6 @@
 	using WeekendCoffee.Data;
 	using WeekendCoffee.Common;
 	using WeekendCoffee.Services.FilterModels;
-	using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 	public interface ISettingsService
 	{
@@ -36,6 +35,11 @@
 		public async Task<Setting> GetOneAsync(SettingsFilter filter)
 		{
 			var settings = this.db.Settings.AsQueryable();
+
+			if (filter.Id > 0)
+			{
+				settings = settings.Where(s => s.Id == filter.Id);
+			}
 
 			if (!string.IsNullOrWhiteSpace(filter.KeyEquals))
 			{
